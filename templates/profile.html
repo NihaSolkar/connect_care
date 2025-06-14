@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>{{ user.name }}</h3>
+  {% if current_user.is_authenticated and current_user.id != user.id %}
+    {% if current_user.is_following(user) %}
+      <a class="btn btn-outline-secondary" href="{{ url_for('unfollow', user_id=user.id) }}">Unfollow</a>
+    {% else %}
+      <a class="btn btn-primary" href="{{ url_for('follow', user_id=user.id) }}">Follow</a>
+    {% endif %}
+  {% endif %}
+</div>
+<p>{{ user.about or "No description yet." }}</p>
+<h5 class="mt-4">Posts</h5>
+{% for post in posts %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <p>{{ post.body }}</p>
+      <small class="text-muted">{{ post.created_at.strftime('%b %d, %Y %I:%M %p') }}</small>
+    </div>
+  </div>
+{% else %}
+  <p>No posts.</p>
+{% endfor %}
+{% endblock %}

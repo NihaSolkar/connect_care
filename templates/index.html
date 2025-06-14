@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% if current_user.is_authenticated %}
+  <div class="card mb-4">
+    <div class="card-body">
+      <form action="{{ url_for('create_post') }}" method="post">
+        <div class="form-group">
+          <textarea class="form-control" name="body" rows="2" placeholder="Share an update..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Post</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+  <h4 class="mb-3">Recent Updates</h4>
+  {% for post in posts %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h6><a href="{{ url_for('profile', user_id=post.author.id) }}">{{ post.author.name }}</a></h6>
+        <p>{{ post.body }}</p>
+        <small class="text-muted">{{ post.created_at.strftime('%b %d, %Y %I:%M %p') }}</small>
+      </div>
+    </div>
+  {% else %}
+    <p>No posts yet.</p>
+  {% endfor %}
+{% endblock %}
